@@ -1,25 +1,20 @@
 import mongoose, { Schema, ObjectId } from "mongoose";
 const ProductSchema = new Schema(
   {
-    name: {
-      type: String,
-      require: true,
-      minlength: 3,
-    },
     prd_id: {
-      type: ObjectId,
+      type: mongoose.ObjectId,
       ref: "Product",
     },
     size_id: {
-      type: ObjectId,
+      type: mongoose.ObjectId,
       ref: "Size",
     },
     color: {
-      type: ObjectId,
+      type: mongoose.ObjectId,
       ref: "Color",
     },
     amount: {
-      type: String,
+      type: Number,
       require: true,
     },
   },
