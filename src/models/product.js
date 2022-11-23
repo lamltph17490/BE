@@ -19,7 +19,7 @@ const ProductSchema = new Schema(
       require: true,
     },
     categoryId: {
-      type: [ObjectId],
+      type: ObjectId,
       ref: "Cateproduct",
     },
     sliderId: {
