@@ -22,8 +22,8 @@ export const list = async (req, res) => {
 };
 export const read = async (req, res) => {
   try {
-    const Size = await Size.findOne({ _id: req.params.id }).exec();
-    res.json(Size);
+    const size = await Size.findOne({ _id: req.params.id }).exec();
+    res.json(size);
   } catch (error) {
     res.status(400).json({
       message: "khong hien thi",
@@ -41,5 +41,12 @@ export const remove = async (req, res) => {
   }
 };
 
-/// chưa có update vào xem các file đã có thêm vào 
+export const update = async (request, response) => {
+  try {
+    const size = await Size.findOneAndUpdate({ _id: request.params.id },request.body,{ new: true }).exec();
+    response.json(size);
+  } catch (error) {
+    response.status(400).json({ message: 'Không sửa được data' });
+  }
+};
  

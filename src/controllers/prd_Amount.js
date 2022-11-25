@@ -11,7 +11,7 @@ export const create = async (req, res) => {
 };
 export const list = async (req, res) => {
   try {
-    const amount = await ProductAmount.find();
+    const amount = await ProductAmount.find().populate("prd_id").populate("size_id").populate("color").exec();
     res.json(amount);
   } catch (error) {
     res.status(400).json({
@@ -36,6 +36,17 @@ export const remove = async (req, res) => {
   } catch (error) {
     res.status(400).json({
       message: "khong xoa",
+    });
+  }
+};
+
+export const update = async (req, res) => {
+  try {
+    const amount = await ProductAmount.findByIdAndUpdate({ _id: req.params.id },req.body,{new:true}).exec();
+    res.json(amount);
+  } catch (error) {
+    res.status(400).json({
+      message: "khoong update dc",
     });
   }
 };

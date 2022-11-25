@@ -1,6 +1,7 @@
 import slugify from "slugify";
 import Product from "../models/product";
 import Comment from "../models/comment";
+import Cateproduct from "../models/cateproduct";
 
 export const create = async (req, res) => {
   const slug = slugify(req.body.name, {
@@ -20,7 +21,7 @@ export const create = async (req, res) => {
 };
 export const list = async (req, res) => {
   try {
-    const products = await Product.find({}).sort("-createdAt").exec();
+    const products = await Product.find({}).sort("-createdAt").populate("categoryId").exec();
     res.json(products);
   } catch (error) {
     res.status(400).json({

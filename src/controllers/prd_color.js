@@ -22,8 +22,8 @@ export const list = async (req, res) => {
 };
 export const read = async (req, res) => {
   try {
-    const Prd_color = await Prd_color.findOne({ _id: req.params.id }).exec();
-    res.json(Prd_color);
+    const prd_color = await Prd_color.findOne({ _id: req.params.id }).exec();
+    res.json(prd_color);
   } catch (error) {
     res.status(400).json({
       message: "khong hien thi",
@@ -38,5 +38,13 @@ export const remove = async (req, res) => {
     res.status(400).json({
       message: "khong xoa",
     });
+  }
+};
+export const update = async (request, response) => {
+  try {
+    const color = await Prd_color.findOneAndUpdate({ _id: request.params.id },request.body,{ new: true }).exec();
+    response.json(color);
+  } catch (error) {
+    response.status(400).json({ message: 'Không sửa được data' });
   }
 };
