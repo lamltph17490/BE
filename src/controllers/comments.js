@@ -55,8 +55,8 @@ export const update = async (req, res) => {
 
 export const getByProduct = async (req, res) => {
   try {
-    const { slug } = req.params;
-    const product = await Product.findOne({ slug }).exec();
+    const { id } = req.params;
+    const product = await Product.findOne({ id }).exec();
     const comments = await Comment.find({ productId: product._id }).sort("-createdAt").exec();
 
     res.json(comments);
