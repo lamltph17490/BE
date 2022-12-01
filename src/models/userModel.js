@@ -25,7 +25,7 @@ const UserSchema = new mongoose.Schema(
       default: process.env.DEFAULT_IMG,
     },
     role: {
-      default: 1,
+      default: 0,
       type: Number,
     },
   },
