@@ -30,7 +30,7 @@ export const listNews = async (req, res) => {
 
 export const readNews = async (req, res) => {
   try {
-    const news = await News.findOne({ _id: req.params.id }).exec();
+    const news = await News.findById(req.params.id).exec();
     res.json(news);
   } catch (error) {
     res.status(400).json({

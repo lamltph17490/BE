@@ -21,7 +21,7 @@ export const list = async (req, res) => {
 };
 export const read = async (req, res) => {
   try {
-    const contacts = await Contact.findOne({ _id: req.params.id }).exec();
+    const contacts = await Contact.findById(req.params.id).exec();
     res.json(contacts);
   } catch (error) {
     res.status(400).json({
