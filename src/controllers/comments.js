@@ -13,7 +13,7 @@ export const list = async (req, res) => {
 };
 export const read = async (req, res) => {
   try {
-    const comment = await Comment.findOne({ _id: req.params.id });
+    const comment = await Comment.findById(req.params.id);
     res.json(comment);
   } catch (error) {
     res.status(400).json({
@@ -56,7 +56,7 @@ export const update = async (req, res) => {
 export const getByProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const product = await Product.findOne({ id }).exec();
+    const product = await Product.findById(id).exec();
     const comments = await Comment.find({ productId: product._id }).sort("-createdAt").exec();
 
     res.json(comments);

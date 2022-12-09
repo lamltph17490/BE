@@ -22,7 +22,7 @@ export const list = async (req, res) => {
 };
 export const read = async (req, res) => {
   try {
-    const orderdetails = await OrderDetail.findOne({ _id: req.params.id });
+    const orderdetails = await OrderDetail.findById(req.params.id);
     res.json(orderdetails);
   } catch (error) {
     res.status(400).json({

@@ -1,10 +1,10 @@
-import ProductAmount from "../models/prd_amount";
+import Product from '../models/product'
 
 const StatisticController = {
   async dashboard(req, res) {
     try {
-      const products = await ProductAmount.find().populate("prd_id").populate("size_id").populate("color").exec();
-      const totalProduct = products.filter((item) => item.amount && item.prd_id).reduce((a, b) => a + b.amount, 0);
+      const products = await Product.find().exec();
+      const totalProduct = products.reduce((a, b) => a + b.colors.map(color => color.sizes.reduce((x, y) => x + y.amount, 0)).reduce((q, w) => q + w, 0), 0);
       res.status(200).json({ totalProduct })
     } catch (e) {
       console.error(e);

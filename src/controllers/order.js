@@ -13,7 +13,7 @@ export const list = async (req, res) => {
 
 export const read = async (req, res) => {
   try {
-    const orders = await Order.findOne({ _id: req.params.id });
+    const orders = await Order.findById(req.params.id);
     res.json(orders);
   } catch (error) {
     res.status(400).json({

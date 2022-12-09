@@ -26,7 +26,7 @@ export const listCategoryNews = async (req, res) => {
 };
 export const readCategoryNews = async (req, res) => {
   try {
-    const catenew = await CategoryNews.findOne({ _id: req.params.id }).exec();
+    const catenew = await CategoryNews.findById(req.params.id).exec();
     const news = await News.find({ categoryId: catenew._id }).exec();
     res.json({
       catenew,

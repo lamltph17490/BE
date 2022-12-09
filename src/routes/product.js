@@ -1,5 +1,16 @@
 import { Router } from "express";
-import { create, getComment, list, read, remove, search, update, getRelated, getBySlug } from "../controllers/product";
+import {
+  create,
+  getComment,
+  list,
+  read,
+  remove,
+  search,
+  update,
+  getRelated,
+  getBySlug,
+  updateAmount,
+} from "../controllers/product";
 import { isAdmin, isAuth, requireSignin } from "../middlewares/checkAuth";
 
 const router = Router();
@@ -13,5 +24,6 @@ router.get("/product/:id", read);
 router.delete("/product/:id", requireSignin, isAuth, isAdmin, remove);
 router.post("/product", create);
 router.put("/product/:id", requireSignin, isAuth, isAdmin, update);
+router.put('/product/:id/updateAmount', requireSignin, isAuth, isAdmin, updateAmount);
 
 module.exports = router;
