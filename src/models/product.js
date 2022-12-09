@@ -30,6 +30,22 @@ const ProductSchema = new Schema(
     slug: {
       type: String,
     },
+    colors: [{
+      colorName: {
+        type: String,
+        required: true,
+      },
+      sizes: [{
+        sizeName: {
+          type: String,
+          required: true,
+        },
+        amount: {
+          type: Number,
+          required: true
+        }
+      }]
+    }]
   },
   { timestamps: true },
 );

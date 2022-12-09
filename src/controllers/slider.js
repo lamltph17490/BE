@@ -11,7 +11,7 @@ export const list = async (req, res) => {
 };
 export const read = async (req, res) => {
   try {
-    const slider = await Slider.findOne({ _id: req.params.id });
+    const slider = await Slider.findById(req.params.id);
     res.json(slider);
   } catch (error) {
     res.status(400).json({

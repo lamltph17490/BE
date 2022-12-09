@@ -21,7 +21,7 @@ export const list = async (req, res) => {
 };
 export const read = async (req, res) => {
   try {
-    const sale = await ProductSale.findOne({ _id: req.params.id }).exec();
+    const sale = await ProductSale.findById(req.params.id).exec();
     res.json(sale);
   } catch (error) {
     res.status(400).json({

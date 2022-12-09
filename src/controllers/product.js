@@ -2,6 +2,7 @@ import slugify from "slugify";
 import Product from "../models/product";
 import Comment from "../models/comment";
 import Cateproduct from "../models/cateproduct";
+import e from "express";
 
 export const create = async (req, res) => {
   const slug = slugify(req.body.name, {
@@ -21,7 +22,7 @@ export const create = async (req, res) => {
 };
 export const list = async (req, res) => {
   try {
-    const products = await Product.find({}).sort("-createdAt").populate("categoryId").exec();
+    const products = await Product.find({}).sort("-createdAt").populate("categoryId").populate('colors').exec();
     res.json(products);
   } catch (error) {
     res.status(400).json({
@@ -31,9 +32,10 @@ export const list = async (req, res) => {
 };
 export const read = async (req, res) => {
   try {
-    const products = await Product.findOne({ _id: req.params.id }).exec();
-    res.json(products);
+    const product = await Product.findById(req.params.id).exec();
+    res.json(product);
   } catch (error) {
+    console.log('error read', error);
     res.status(400).json({
       message: "khong hien thi",
     });
@@ -77,7 +79,7 @@ export const search = async (req, res) => {
 };
 export const getComment = async (req, res) => {
   try {
-    const product = await Product.findOne({ _id: req.params.id }).exec();
+    const product = await Product.findById(req.params.id).exec();
     const comments = await Comment.find({ productId: product._id });
     res.json({
       product,
@@ -117,3 +119,16 @@ export const getBySlug = async (req, res) => {
     });
   }
 };
+
+export const updateAmount = async (req, res) => {
+  try {
+    const data = req.body;
+    const product = await Product.findByIdAndUpdate(data.product_id, { colors: data.colors }, { new: true });
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({
+      message: 'Server error',
+      error
+    })
+  }
+}
