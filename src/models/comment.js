@@ -30,4 +30,17 @@ commentSchema.virtual("user", {
   justOne: true,
 });
 
+commentSchema.pre(/^find/, function (next) {
+  this.populate("product");
+
+  next();
+});
+
+commentSchema.virtual("product", {
+  ref: "Product",
+  foreignField: "_id",
+  localField: "productId",
+  justOne: true,
+});
+
 export default mongoose.model("Comment", commentSchema);
