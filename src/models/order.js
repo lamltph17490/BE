@@ -1,10 +1,11 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, ObjectId } from "mongoose";
 
 const orderSchema = new Schema(
   {
     userId: {
-      type: String,
+      type: mongoose.ObjectId,
       require: true,
+      ref: "User",
     },
     customerName: {
       type: String,

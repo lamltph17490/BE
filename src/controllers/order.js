@@ -2,7 +2,7 @@ import Order from "../models/order";
 
 export const list = async (req, res) => {
   try {
-    const orders = await Order.find().sort("-createdAt");
+    const orders = await Order.find().populate("userId").sort("-createdAt").exec();
     res.json(orders);
   } catch (error) {
     res.status(400).json({
