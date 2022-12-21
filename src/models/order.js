@@ -35,6 +35,9 @@ const orderSchema = new Schema(
       type: Number,
       default: 0,
     },
+    date: {
+      type: Date,
+    },
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );
