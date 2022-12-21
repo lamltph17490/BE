@@ -10,8 +10,12 @@ const orderDetailSchema = new Schema(
       type: ObjectId,
       ref: "Product",
     },
-    productPrice: {
-      type: Number,
+    size: {
+      type: Object,
+      require: true,
+    },
+    color: {
+      type: Object,
       require: true,
     },
     quantity: {
