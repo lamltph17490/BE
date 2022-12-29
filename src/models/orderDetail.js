@@ -7,8 +7,8 @@ const orderDetailSchema = new Schema(
       ref: "Order",
     },
     productId: {
-      type: ObjectId,
-      ref: "Product",
+      type: Object,
+      require: true,
     },
     size: {
       type: Object,
