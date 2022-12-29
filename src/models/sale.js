@@ -13,6 +13,10 @@ const ProductSchema = new Schema(
       type: Number,
       require: true,
     },
+    time: {
+      type: String,
+      require: true,
+    },
     percent: {
       type: Number,
       require: true,

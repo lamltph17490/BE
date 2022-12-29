@@ -26,7 +26,10 @@ const ProductSchema = new Schema(
       type: ObjectId,
       ref: "Slider",
     },
-
+    status: {
+      type: String,
+      require: true,
+    },
     slug: {
       type: String,
     },
