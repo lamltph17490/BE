@@ -38,6 +38,10 @@ const orderSchema = new Schema(
     date: {
       type: Date,
     },
+    paid: {
+      type: Boolean,
+      default: false,
+    }, // false: chưa thanh toán, true: đã thanh toán
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );
