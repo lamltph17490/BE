@@ -24,15 +24,25 @@ const StatisticController = {
         ...i.toObject(),
         month: moment(i.date).month() + 1,
       })), "month");
-      const ordersDetail = groupBy(orderDetails, 'productId')
+      const ordersDetail = groupBy(orderDetails, 'productId._id');
+      const populateProducts = Object.keys(ordersDetail).map(productId => {
+        const firstOrder = ordersDetail[productId][0]
+        const find = products.find(({ _id }) => _id.toHexString() === productId)
+        if (!find) {
+          return null
+        }
+        return { ...find.toObject(), quantity: ordersDetail[productId].reduce((a, b) => a + b.quantity, 0), month: moment(firstOrder.createdAt).month() + 1 }
+      }).filter(i => i).sort((a, b) => b.quantity - a.quantity)
 
       const totalProducts = products.reduce((a, b) => a + b.colors.map(color => color.sizes.reduce((x, y) => x + y.amount, 0)).reduce((q, w) => q + w, 0), 0);
 
       const totalOrders = ordersCompleted.length;
       const totalSaleProducts = getTotalSaleProducts(ordersCompleted);
       const totalRevenue = getTotalRevenue(ordersCompleted);
+      const ordersToday = ordersCompleted.filter(i => moment(i.createdAt) >= moment().startOf('day') && moment(i.createdAt) <= moment().endOf('day'))
+      // const ordersToday = ordersCompleted
 
-      res.status(200).json({ total: { totalOrders, totalProducts, totalRevenue, totalSaleProducts }, orders, ordersDetail });
+      res.status(200).json({ total: { totalOrders, totalProducts, totalRevenue, totalSaleProducts }, orders, populateProducts, ordersToday });
     } catch (e) {
       console.error(e);
       res.status(500);
