@@ -48,7 +48,11 @@ const ProductSchema = new Schema(
           required: true
         }
       }]
-    }]
+    }],
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    }
   },
   { timestamps: true },
 );
