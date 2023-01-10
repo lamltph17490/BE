@@ -15,21 +15,22 @@ const StatisticController = {
   async dashboard(req, res) {
     try {
       const yearSelected = +req.query.year || moment().year();
-      const monthSelected = +req.query.month || null;
+      const startDate = req.body.startDate;
+      const endDate = req.body.endDate;
       const startOfYear = moment(yearSelected, "YYYY").startOf("year").toDate();
       const endOfYear = moment(yearSelected, "YYYY").endOf("year").toDate();
       let startTime = startOfYear;
       let endTime = endOfYear;
-      const startOfDay = moment().startOf('day').toDate();
-      const endOfDay = moment().endOf('day').toDate();
+      // const startOfDay = moment().startOf('day').toDate();
+      // const endOfDay = moment().endOf('day').toDate();
 
-      if (monthSelected) {
-        startTime = moment(`${yearSelected}-${monthSelected}`, 'YYYY-MM').startOf('month').toDate();
-        endTime = moment(`${yearSelected}-${monthSelected}`, 'YYYY-MM').endOf('month').toDate();
+      if (startDate && endDate) {
+        startTime = moment(startDate).toDate();
+        endTime = moment(endDate).toDate();
       }
 
       const products = await Product.find();
-      const ordersToday = await Order.find({ status: 4, date: { $gte: startOfDay, $lte: endOfDay } })
+      // const ordersToday = await Order.find({ status: 4, date: { $gte: startOfDay, $lte: endOfDay } })
       const ordersCompleted = await Order.find({ status: 4, date: { $gte: startTime, $lte: endTime } });
       const ordersInYear = await Order.find({ status: 4, date: { $gte: startOfYear, $lte: endOfYear } });
       const orderDetails = await OrderDetail.find({ orderId: { $in: ordersCompleted.map(({ _id }) => _id)}})
@@ -54,7 +55,7 @@ const StatisticController = {
       const totalRevenue = getTotalRevenue(ordersCompleted);
       // const ordersToday = ordersCompleted
 
-      res.status(200).json({ total: { totalOrders, totalProducts, totalRevenue, totalSaleProducts }, orders, populateProducts, ordersToday });
+      res.status(200).json({ total: { totalOrders, totalProducts, totalRevenue, totalSaleProducts }, allOrders: orders, populateProducts, orders: ordersCompleted });
     } catch (e) {
       console.error(e);
       res.status(500);
