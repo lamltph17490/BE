@@ -42,6 +42,9 @@ const orderSchema = new Schema(
       type: Boolean,
       default: false,
     }, // false: chưa thanh toán, true: đã thanh toán
+    reason: {
+      type: String,
+    },
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );
