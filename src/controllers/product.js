@@ -135,3 +135,17 @@ export const updateAmount = async (req, res) => {
     })
   }
 }
+
+
+export const productFilter = async (req, res) => {
+  try {
+    const {data} = req.body;
+    const product = await Product.find({ categoryId: data });
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({
+      message: 'Không có sản phẩm phù hợp',
+      error
+    })
+  }
+}
