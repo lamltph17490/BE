@@ -8,6 +8,6 @@ router.get("/sales/:id", read);
 router.delete("/sales/:id", remove);
 router.post("/sales", create);
 router.put('/sales/:id', update);
-router.post('/use-voucher/:id', useVoucher)
+router.post('/use-voucher', useVoucher)
 
 module.exports = router;

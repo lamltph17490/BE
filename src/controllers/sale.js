@@ -43,7 +43,7 @@ export const remove = async (req, res) => {
 };
 export const update = async (request, response) => {
   try {
-    const sale = await ProductSale.findOneAndUpdate({ _id: request.params.id },request.body,{ new: true }).exec();
+    const sale = await ProductSale.findOneAndUpdate({ _id: request.params.id }, request.body, { new: true }).exec();
     response.json(sale);
   } catch (error) {
     response.status(400).json({ message: 'Không sửa được data' });
@@ -56,12 +56,10 @@ export const update = async (request, response) => {
 export let useVoucher = async (req, res) => {
   const now = moment().unix()
 
-  const { id } = req.params;
   const { code } = req.body;
   const { price } = req.body;
   try {
     let priceTotal
-    const order = await Order.findOne({ _id: id }).exec();
     const voucher = await ProductSale.findOne({ code }).exec();
     if (!voucher) {
       return res.status(400).json({
@@ -79,14 +77,7 @@ export let useVoucher = async (req, res) => {
         message: "Voucher đã hết lượt sử dụng.",
       });
     }
-    if (order) {
-      priceTotal = price - ( price / 100) * voucher.percent;
-    }
-    else {
-      return res.status(400).json({
-        message: "Đơn đặt hàng không tồn tại"
-      })
-    }
+    priceTotal = price - (price / 100) * voucher.percent;
     return res.json(priceTotal);
   } catch (error) {
     return res.json(error.message);
