@@ -10,6 +10,7 @@ import {
   getRelated,
   getBySlug,
   updateAmount,
+  productFilter,
 } from "../controllers/product";
 import { isAdmin, isAuth, requireSignin } from "../middlewares/checkAuth";
 
@@ -25,5 +26,6 @@ router.delete("/product/:id", requireSignin, isAuth, isAdmin, remove);
 router.post("/product", create);
 router.put("/product/:id", requireSignin, isAuth, isAdmin, update);
 router.put('/product/:id/updateAmount', requireSignin, isAuth, isAdmin, updateAmount);
+router.post('/product-filter', productFilter);
 
 module.exports = router;
