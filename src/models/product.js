@@ -26,7 +26,10 @@ const ProductSchema = new Schema(
       type: ObjectId,
       ref: "Slider",
     },
-
+    content: {
+      type: String,
+      require: true,
+    },
     slug: {
       type: String,
     },
@@ -45,7 +48,11 @@ const ProductSchema = new Schema(
           required: true
         }
       }]
-    }]
+    }],
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    }
   },
   { timestamps: true },
 );

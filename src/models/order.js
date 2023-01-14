@@ -1,10 +1,11 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, ObjectId } from "mongoose";
 
 const orderSchema = new Schema(
   {
     userId: {
-      type: String,
+      type: mongoose.ObjectId,
       require: true,
+      ref: "User",
     },
     customerName: {
       type: String,
@@ -33,6 +34,16 @@ const orderSchema = new Schema(
     status: {
       type: Number,
       default: 0,
+    },
+    date: {
+      type: Date,
+    },
+    paid: {
+      type: Boolean,
+      default: false,
+    }, // false: chưa thanh toán, true: đã thanh toán
+    reason: {
+      type: String,
     },
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },

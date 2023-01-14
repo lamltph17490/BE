@@ -1,8 +1,7 @@
 import slugify from "slugify";
 import Product from "../models/product";
 import Comment from "../models/comment";
-import Cateproduct from "../models/cateproduct";
-import e from "express";
+import mongoose from "mongoose";
 
 export const create = async (req, res) => {
   const slug = slugify(req.body.name, {
@@ -22,7 +21,7 @@ export const create = async (req, res) => {
 };
 export const list = async (req, res) => {
   try {
-    const products = await Product.find({}).sort("-createdAt").populate("categoryId").populate('colors').exec();
+    const products = await Product.find({ isDeleted: false }).sort("-createdAt").populate("categoryId").populate('colors').exec();
     res.json(products);
   } catch (error) {
     res.status(400).json({
@@ -32,7 +31,8 @@ export const list = async (req, res) => {
 };
 export const read = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id).exec();
+    console.log('mongoose', req.params.id);
+    const product = await Product.findOne({ _id: req.params.id, isDeleted: false }).exec();
     res.json(product);
   } catch (error) {
     console.log('error read', error);
@@ -43,7 +43,7 @@ export const read = async (req, res) => {
 };
 export const remove = async (req, res) => {
   try {
-    const products = await Product.findOneAndDelete({ _id: req.params.id }).exec();
+    const products = await Product.findByIdAndUpdate(req.params.id, { isDeleted: true }).exec();
     res.json(products);
   } catch (error) {
     res.status(400).json({
@@ -58,7 +58,7 @@ export const update = async (req, res) => {
   });
   req.body.slug = slug;
   try {
-    const products = await Product.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }).exec();
+    const products = await Product.findOneAndUpdate({ _id: req.params.id, isDeleted: false }, req.body, { new: true }).exec();
     res.json(products);
   } catch (error) {
     res.status(400).json({
@@ -68,7 +68,7 @@ export const update = async (req, res) => {
 };
 export const search = async (req, res) => {
   try {
-    const conditions = { name: { $regex: req.query.key, $options: "i" } };
+    const conditions = { name: { $regex: req.query.key, $options: "i" }, isDeleted: false };
     const products = await Product.find(conditions);
     res.json(products);
   } catch (error) {
@@ -95,7 +95,10 @@ export const getComment = async (req, res) => {
 export const getRelated = async (req, res) => {
   try {
     const { slug } = req.params;
-    const product = await Product.findOne({ slug }).exec();
+    const product = await Product.findOne({ slug, isDeleted: false }).exec();
+    if (!product) {
+      return res.json([])
+    }
     const productRelated = await Product.find({ slug: { $ne: slug }, catygoryId: product.catygoryId })
       .limit(4)
       .sort("-createdAt")
@@ -111,7 +114,7 @@ export const getRelated = async (req, res) => {
 
 export const getBySlug = async (req, res) => {
   try {
-    const products = await Product.findOne({ slug: req.params.slug }).exec();
+    const products = await Product.findOne({ slug: req.params.slug, isDeleted: false }).exec();
     res.json(products);
   } catch (error) {
     res.status(400).json({

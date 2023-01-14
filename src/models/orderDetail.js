@@ -7,11 +7,15 @@ const orderDetailSchema = new Schema(
       ref: "Order",
     },
     productId: {
-      type: ObjectId,
-      ref: "Product",
+      type: Object,
+      require: true,
     },
-    productPrice: {
-      type: Number,
+    size: {
+      type: Object,
+      require: true,
+    },
+    color: {
+      type: Object,
       require: true,
     },
     quantity: {
