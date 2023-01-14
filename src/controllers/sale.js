@@ -58,7 +58,9 @@ export let useVoucher = async (req, res) => {
 
   const { id } = req.params;
   const { code } = req.body;
+  const { price } = req.body;
   try {
+    let priceTotal
     const order = await Order.findOne({ _id: id }).exec();
     const voucher = await ProductSale.findOne({ code }).exec();
     if (!voucher) {
@@ -78,14 +80,14 @@ export let useVoucher = async (req, res) => {
       });
     }
     if (order) {
-      order.totalPrice = order.totalPrice - ( order.totalPrice / 100) * voucher.percent;
+      priceTotal = price - ( price / 100) * voucher.percent;
     }
     else {
       return res.status(400).json({
         message: "Đơn đặt hàng không tồn tại"
       })
     }
-    return res.json(order);
+    return res.json(priceTotal);
   } catch (error) {
     return res.json(error.message);
   }
