@@ -33,6 +33,9 @@ const ProductSchema = new Schema(
     slug: {
       type: String,
     },
+    subImage : {
+      type : Array
+    },
     colors: [{
       colorName: {
         type: String,
