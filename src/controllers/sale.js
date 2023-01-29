@@ -78,6 +78,7 @@ export let useVoucher = async (req, res) => {
       });
     }
     priceTotal = price - (price / 100) * voucher.percent;
+    await ProductSale.findOneAndUpdate({ code },{amount:voucher.amount -1 } , { new: true }).exec();
     return res.json(priceTotal);
   } catch (error) {
     return res.json(error.message);
