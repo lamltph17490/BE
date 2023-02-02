@@ -55,7 +55,6 @@ export const update = async (request, response) => {
 // use
 export let useVoucher = async (req, res) => {
   const now = moment().unix()
-
   const { code } = req.body;
   const { price } = req.body;
   try {
@@ -66,12 +65,18 @@ export let useVoucher = async (req, res) => {
         message: "Voucher không hợp lệ.",
       });
     }
-    const expire = moment(voucher.time)
-    if (now > expire) {
-      return res.status(400).json({
-        message: "Voucher đã hết hạn sử dụng.",
-      });
+    const today = moment().format("YYYY-MM-DD")
+    const voucherTime = moment().format(voucher.time)
+    if(today == voucherTime) {
+      true
+    }else{
+      if (now > Math.round(Date.parse(voucher.time) / 1000)) {
+        return res.status(400).json({
+          message: "Voucher đã hết hạn sử dụng.",
+        });
+      }
     }
+   
     if (voucher.amount < 1) {
       return res.status(400).json({
         message: "Voucher đã hết lượt sử dụng.",

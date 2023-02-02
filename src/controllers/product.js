@@ -149,3 +149,21 @@ export const productFilter = async (req, res) => {
     })
   }
 }
+
+export const productSearch = async (req, res) => {
+  const searchField = req.query.q;
+  try {
+      const blogSearch = await Product.find({
+        name: { $regex: searchField, $options: "$i" },
+      })
+        .populate("categoryId")
+        .sort({ createdAt: -1 });
+
+      return res.json(blogSearch);
+  } catch (error) {
+    res.status(500).json({
+      message: 'Không có sản phẩm phù hợp',
+      error
+    })
+  }
+}

@@ -11,6 +11,7 @@ import {
   getBySlug,
   updateAmount,
   productFilter,
+  productSearch,
 } from "../controllers/product";
 import { isAdmin, isAuth, requireSignin } from "../middlewares/checkAuth";
 
@@ -27,5 +28,6 @@ router.post("/product", create);
 router.put("/product/:id", requireSignin, isAuth, isAdmin, update);
 router.put('/product/:id/updateAmount', requireSignin, isAuth, isAdmin, updateAmount);
 router.post('/product-filter', productFilter);
+router.get('/product-search', productSearch);
 
 module.exports = router;
