@@ -17,8 +17,8 @@ const StatisticController = {
       const yearSelected = +req.query.year || moment().year();
       const startDate = req.body.startDate;
       const endDate = req.body.endDate;
-      const startOfYear = moment(yearSelected, "YYYY").startOf("year").toDate();
-      const endOfYear = moment(yearSelected, "YYYY").endOf("year").toDate();
+      let startOfYear = moment(yearSelected, "YYYY").startOf("year").toDate();
+      let endOfYear = moment(yearSelected, "YYYY").endOf("year").toDate();
       let startTime = startOfYear;
       let endTime = endOfYear;
       // const startOfDay = moment().startOf('day').toDate();
@@ -27,6 +27,8 @@ const StatisticController = {
       if (startDate && endDate) {
         startTime = moment(startDate).toDate();
         endTime = moment(endDate).toDate();
+        startOfYear = moment(startDate).startOf('year').toDate();
+        endOfYear = moment(endDate).endOf('year').toDate();
       }
 
       const products = await Product.find();
