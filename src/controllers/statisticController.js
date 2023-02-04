@@ -14,13 +14,14 @@ function getTotalRevenue(orders = []) {
 const StatisticController = {
   async dashboard(req, res) {
     try {
-      const yearSelected = +req.query.year || moment().year();
+      const yearSelected = +req.body.yearSelected || moment().year();
       const startDate = req.body.startDate;
       const endDate = req.body.endDate;
       const startOfYear = moment(yearSelected, "YYYY").startOf("year").toDate();
       const endOfYear = moment(yearSelected, "YYYY").endOf("year").toDate();
-      let startTime = startOfYear;
-      let endTime = endOfYear;
+
+      let startTime = moment().startOf("year").toDate();
+      let endTime = moment().endOf("year").toDate();
       // const startOfDay = moment().startOf('day').toDate();
       // const endOfDay = moment().endOf('day').toDate();
 
