@@ -167,3 +167,24 @@ export const productSearch = async (req, res) => {
     })
   }
 }
+
+export const updateAmountProduct = async ({ productId, colorId, sizeId, quantity }) => {
+  console.log('updateAmountProduct', { productId, colorId, sizeId, quantity });
+  const product = await Product.findById(productId);
+  if (product) {
+    product.colors = product.colors.map((iColor) => {
+      if (iColor._id.toHexString() === colorId) {
+        return {
+          ...iColor.toObject(), sizes: iColor.sizes.map((iSize) => {
+            if (iSize._id.toHexString() === sizeId) {
+              return { ...iSize.toObject(), amount: iSize.amount + quantity }
+            }
+            return iSize
+          })
+        }
+      }
+      return iColor
+    })
+    await product.save()
+  }
+}

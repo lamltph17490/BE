@@ -1,27 +1,11 @@
 import OrderDetail from "../models/orderDetail";
-import Product from '../models/product';
+import { updateAmountProduct } from "./product";
 
 export const create = async (req, res) => {
   try {
     const orderdetails = await new OrderDetail(req.body).save();
-    const { color, productId, quantity, size } = req.body
-    const product = await Product.findById(productId._id);
-    if (product) {
-      const newColors = product.colors.map((iColor) => {
-        if (iColor._id.toHexString() === color._id) {
-          return { ...iColor.toObject(), sizes: iColor.sizes.map((iSize) => {
-              if (iSize._id.toHexString() === size._id) {
-                return { ...iSize.toObject(), amount: iSize.amount - quantity }
-              }
-              return iSize
-            })
-          }
-        }
-        return iColor
-      })
-      product.colors = newColors
-      await product.save()
-    }
+    const { color, productId, quantity, size } = req.body;
+    await updateAmountProduct({ productId: productId._id, colorId: color._id, sizeId: size._id, quantity: -quantity })
     res.json(orderdetails);
   } catch (error) {
     res.status(400).json({
